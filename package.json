@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/dvargas92495/chainlink-hackathon/issues"
   },
-  "homepage": "https://github.com/dvargas92495/chainlink-hackathon#readme"
+  "homepage": "https://github.com/dvargas92495/chainlink-hackathon#readme",
+  "dependencies": {
+    "@chainlink/contracts": "0.0.9"
+  }
 }
