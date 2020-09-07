@@ -1,0 +1,19 @@
+{
+  "name": "chainlink-hackathon",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dvargas92495/chainlink-hackathon.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dvargas92495/chainlink-hackathon/issues"
+  },
+  "homepage": "https://github.com/dvargas92495/chainlink-hackathon#readme"
+}
