@@ -3,15 +3,17 @@
   "version": "1.0.0",
   "description": "A Chainlink Hackathon Project 2020",
   "scripts": {
-    "compile": "npx truffle compile",
-    "console:dev": "npx truffle console --network cldev",
-    "console:live": "npx truffle console --network live",
+    "compile": "truffle compile",
+    "console:dev": "truffle console --network cldev",
+    "console:ganache": "truffle console --network ganache",
+    "console:live": "truffle console --network live",
     "depcheck": "echo '@chainlink/box' && depcheck --ignore-dirs=build/contracts || true",
     "solhint": "solhint ./contracts/**/*.sol",
     "lint": "yarn solhint",
-    "migrate:dev": "npx truffle migrate --reset --network cldev",
-    "migrate:live": "npx truffle migrate --network live",
-    "test": "NODE_ENV=test npx truffle test"
+    "migrate:dev": "truffle migrate --reset --network cldev",
+    "migrate:ganache": "truffle migrate --reset --network ganache",
+    "migrate:live": "truffle migrate --network live",
+    "test": "NODE_ENV=test truffle test"
   },
   "license": "MIT",
   "dependencies": {

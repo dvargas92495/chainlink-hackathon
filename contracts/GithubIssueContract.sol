@@ -9,8 +9,12 @@ contract GithubIssueContract is ChainlinkClient {
   bytes32 private jobId;
   uint256 private fee;
 
-  constructor() public {
-    setPublicChainlinkToken();
+  constructor(address _link) public {
+    if (_link == address(0)) {
+      setPublicChainlinkToken();
+    } else {
+      setChainlinkToken(_link);
+    }
     oracle = 0x2f90A6D021db21e1B2A077c5a37B3C7E75D15b7e;
     jobId = "6d914edc36e14d6c880c9c55bda5bc04"; // Get, Parse, Bool
     fee = 0.1 * 10 ** 18; // 0.1 LINK
