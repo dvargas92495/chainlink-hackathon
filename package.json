@@ -1,7 +1,7 @@
 {
-  "name": "@chainlink/box",
-  "version": "0.6.0",
-  "description": "A Chainlink example in a Truffle box",
+  "name": "chainlink-hackathon",
+  "version": "1.0.0",
+  "description": "A Chainlink Hackathon Project 2020",
   "scripts": {
     "compile": "npx truffle compile",
     "console:dev": "npx truffle console --network cldev",
