@@ -4,12 +4,13 @@ import "@chainlink/contracts/src/v0.6/ChainlinkClient.sol";
 
 contract GithubIssueContract is ChainlinkClient {
   bool public state;
+  string public issueUrl;
 
   address private oracle;
   bytes32 private jobId;
   uint256 private fee;
 
-  constructor(address _link) public {
+  constructor(address _link, string memory _issueUrl) public {
     if (_link == address(0)) {
       setPublicChainlinkToken();
     } else {
@@ -18,19 +19,18 @@ contract GithubIssueContract is ChainlinkClient {
     oracle = 0x2f90A6D021db21e1B2A077c5a37B3C7E75D15b7e;
     jobId = "6d914edc36e14d6c880c9c55bda5bc04"; // Get, Parse, Bool
     fee = 0.1 * 10 ** 18; // 0.1 LINK
+    issueUrl = _issueUrl;
   }
 
   /**
-   * @param _url The URL to fetch data from, passed from the frontend to avoid string concatenation on contract
    * @param _payment The payment
    */
   function createGithubIssueRequest(
-    uint256 _payment,
-    string memory _url
+    uint256 _payment
   ) public returns (bytes32 requestId)
   {
     Chainlink.Request memory req = buildChainlinkRequest(jobId, address(this), this.fulfill.selector);
-    req.add("url", _url);
+    req.add("url", issueUrl);
     req.add("path", "state");
     requestId = sendChainlinkRequestTo(oracle, req, _payment);
   }
