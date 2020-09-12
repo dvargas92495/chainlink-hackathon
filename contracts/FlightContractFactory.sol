@@ -19,7 +19,7 @@ contract FlightContractFactory {
     address chainLinkToken,
     uint256 price,
     uint256 flightId,
-    string memory condition
+    uint256 condition
   )
     public
     returns(address newContract)
@@ -38,17 +38,17 @@ contract FlightContract is ChainlinkClient {
 
   uint256 price;
   uint256 flightId;
-  string condition;
+  uint256 condition;
   bool refund;
 
-  constructor(address _link, uint256 _price, uint256 _flightId, string memory _condition) public {
+  constructor(address _link, uint256 _price, uint256 _flightId, uint256 _condition) public {
     if (_link == address(0)) {
       setPublicChainlinkToken();
     } else {
       setChainlinkToken(_link);
     }
     oracle = 0x2f90A6D021db21e1B2A077c5a37B3C7E75D15b7e;
-    jobId = "6d914edc36e14d6c880c9c55bda5bc04"; // Get, Parse, Bool
+    jobId = "b6602d14e4734c49a5e1ce19d45a4632"; // Get, Parse, Multi, UInt256, Transact
     fee = 0.1 * 10 ** 18; // 0.1 LINK
 
     price = _price;
@@ -74,6 +74,6 @@ contract FlightContract is ChainlinkClient {
     public
     recordChainlinkFulfillment(_requestId)
   {
-    refund = positiveCases > 10000;
+    refund = positiveCases > condition;
   }
 }
