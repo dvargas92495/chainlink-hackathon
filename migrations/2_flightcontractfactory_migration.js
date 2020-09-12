@@ -1,4 +1,4 @@
-const GithubIssueContract = artifacts.require('GithubIssueContract')
+const FlightContractFactory = artifacts.require('FlightContractFactory')
 const { LinkToken } = require('@chainlink/contracts/truffle/v0.4/LinkToken')
 const { Oracle } = require('@chainlink/contracts/truffle/v0.6/Oracle')
 
@@ -11,13 +11,13 @@ module.exports = async (deployer, network, [defaultAccount]) => {
     try {
       await deployer.deploy(LinkToken, { from: defaultAccount })
       await deployer.deploy(Oracle, LinkToken.address, { from: defaultAccount })
-      await deployer.deploy(GithubIssueContract, LinkToken.address, "https://api.github.com/repos/trufflesuite/truffle/issues/3183")
+      await deployer.deploy(FlightContractFactory, LinkToken.address, "https://api.github.com/repos/trufflesuite/truffle/issues/3183")
     } catch (err) {
       console.error(err)
     }
   } else {
     // For live networks, use the 0 address to allow the ChainlinkRegistry
     // contract automatically retrieve the correct address for you
-    deployer.deploy(GithubIssueContract, '0x0000000000000000000000000000000000000000')
+    deployer.deploy(FlightContractFactory, '0x0000000000000000000000000000000000000000')
   }
 }
