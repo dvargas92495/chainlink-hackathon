@@ -2,17 +2,10 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { redirect } from "./utils";
 import { withRouter } from "react-router-dom";
-import Web3 from "web3";
-import contractFactory from "../contracts/FlightContractFactory.json";
-import TruffleContract from "@truffle/contract";
+import { dateOf, getContractModules, redirect, toFormat } from "./utils";
 
-const web3 = window.ethereum
-  ? new Web3(window.ethereum)
-  : new Web3("ws://localhost:7545");
-const flightContractFactory = TruffleContract(contractFactory);
-flightContractFactory.setProvider(web3.currentProvider);
+const { web3, flightContractFactory } = getContractModules();
 
 class FlightsPage extends Component {
   constructor(props) {
@@ -50,12 +43,14 @@ class FlightsPage extends Component {
         {this.state.address && <div>Signed in as {this.state.address}</div>}
         <ul>
           {flights.map((f) => (
-            <li key={f.id} onClick={this.redirect(`/${f.id}`)}>
-              From: {f.startLoc}
-              To: {f.endLoc}
-              Departing: {f.startTime}
-              Arriving: {f.endTime}
-              Price: ${f.price}
+            <li key={f.id} onClick={this.redirect(`/${f.id}`)} className="flightItem">
+              {f.startCity}, {f.startState} {'->'} {f.endCity}, {f.endState}
+              <br />
+              Departing: {toFormat(dateOf(f.startTime))}
+              &nbsp;&nbsp;&nbsp;
+              Arriving: {toFormat(dateOf(f.endTime))}
+              <br />
+              ${f.price}
             </li>
           ))}
         </ul>
