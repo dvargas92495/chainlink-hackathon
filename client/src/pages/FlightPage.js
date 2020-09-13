@@ -109,7 +109,7 @@ class FlightPage extends Component {
     const contract = this.state.contract;
     return (
       <div className="FlightPage">
-        {this.state.address && <div>Signed in as {this.state.address}</div>}
+        {this.state.address && <div>Signed in as address: {this.state.address}</div>}
         <button onClick={this.redirect("/")}>Back</button>
         <br />
         <br />

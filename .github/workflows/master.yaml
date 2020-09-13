@@ -20,10 +20,13 @@ jobs:
         with:
           node-version: 12.16.1
       - name: install
+        working-directory: client
         run: npm install
       - name: Build
+        working-directory: client
         run: npm run build
       - name: Upload
+        working-directory: scripts
         run: aws s3 sync build s3://wings.davidvargas.me --delete
       - name: Invalidate Cache
         run: |
