@@ -1,0 +1,6 @@
+{
+  "terminal.integrated.env.windows": {
+    "AWS_PROFILE": "wings",
+    "TF_WORKSPACE": "wings"
+  }
+}
