@@ -40,7 +40,7 @@ class FlightsPage extends Component {
     const flights = this.props.flights;
     return (
       <div className="FlightsPage">
-        {this.state.address && <div>Signed in as {this.state.address}</div>}
+        {this.state.address && <div>Signed in as address: {this.state.address}</div>}
         <ul>
           {flights.map((f) => (
             <li key={f.id} onClick={this.redirect(`/${f.id}`)} className="flightItem">
