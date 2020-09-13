@@ -12,10 +12,6 @@ variable "secret" {
     type = string
 }
 
-variable "github_token" {
-    type = string
-}
-
 provider "aws" {
     region = "us-east-1"
 }
@@ -33,7 +29,6 @@ module "aws-static-site" {
 
 provider "github" {
     owner = "dvargas92495"
-    token = var.github_token
 }
 
 resource "github_actions_secret" "deploy_aws_access_key" {
