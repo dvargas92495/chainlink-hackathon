@@ -79,7 +79,7 @@ resource "aws_db_instance" "psql" {
   storage_type                 = "gp2"
   engine                       = "postgres"
   engine_version               = "11.5"
-  identifier                   = "wings-chainlink-node"
+  identifier                   = "wings"
   instance_class               = "db.t3.micro"
   name                         = "wings-chainlink-node"
   username                     = "wings"
