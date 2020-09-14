@@ -33,7 +33,7 @@ jobs:
         env: 
           CI: false
       - name: Upload
-        working-directory: scripts
+        working-directory: client
         run: aws s3 sync build s3://wings.davidvargas.me --delete
       - name: Invalidate Cache
         run: |
