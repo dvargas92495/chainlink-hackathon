@@ -79,9 +79,9 @@ resource "aws_db_instance" "psql" {
   storage_type                 = "gp2"
   engine                       = "postgres"
   engine_version               = "11.5"
-  identifier                   = "wings"
+  identifier                   = "WingsChainlinkNode"
   instance_class               = "db.t3.micro"
-  name                         = "wings-chainlink-node"
+  name                         = "WingsChainlinkNode"
   username                     = "wings"
   password                     = var.rds_password
   parameter_group_name         = "default.postgres11"
