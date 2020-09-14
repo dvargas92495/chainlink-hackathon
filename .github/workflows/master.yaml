@@ -27,6 +27,11 @@ jobs:
       - name: Build
         working-directory: client
         run: npm run build
+
+        # This is really annoying
+        # https://github.com/trufflesuite/truffle/issues/3009
+        env: 
+          CI: false
       - name: Upload
         working-directory: scripts
         run: aws s3 sync build s3://wings.davidvargas.me --delete
