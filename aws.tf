@@ -12,6 +12,10 @@ variable "secret" {
     type = string
 }
 
+variable "rds_password" {
+    type = string
+}
+
 provider "aws" {
     region = "us-east-1"
 }
@@ -65,6 +69,29 @@ resource "aws_instance" "web" {
   key_name = "Wings-Chainlink-Node"
 
   tags = {
+    Application = "Wings"
+  }
+}
+
+resource "aws_db_instance" "psql" {
+  allocated_storage            = 20
+  max_allocated_storage        = 1000
+  storage_type                 = "gp2"
+  engine                       = "postgres"
+  engine_version               = "11.5"
+  identifier                   = "wings-chainlink-node"
+  instance_class               = "db.t3.micro"
+  name                         = "wings-chainlink-node"
+  username                     = "wings"
+  password                     = var.rds_password
+  parameter_group_name         = "default.postgres11"
+  port                         = 5432
+  publicly_accessible          = true
+  skip_final_snapshot          = true
+  storage_encrypted            = true
+  deletion_protection          = true
+  performance_insights_enabled = true
+  tags                         = {
     Application = "Wings"
   }
 }
