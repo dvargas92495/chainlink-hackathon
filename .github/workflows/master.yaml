@@ -19,6 +19,8 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12.16.1
+      - name: install root
+        run: npm install
       - name: install
         working-directory: client
         run: npm install

@@ -76,7 +76,6 @@ class FlightPage extends Component {
       price: this.state.price,
     }; // Submit contract based on this.props.flightId and desired covid cases
     try {
-      window.myInstance = this.state.factoryInstance;
       const contractAddress = await this.state.factoryInstance.newFlightContract(
         this.state.address,
         contract.price,
