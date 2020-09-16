@@ -9,9 +9,9 @@ const App = () => (
   <div className="App">
     <header className="App-header">
       <img src={logo} className="App-logo" alt="logo" height={50} width={50} />
-      <h6>flight contracts</h6>
+      <h6>wings</h6>
       <div>
-        <i>book under your circumstances</i>
+        <i>book on your terms</i>
       </div>
     </header>
     <Switch>

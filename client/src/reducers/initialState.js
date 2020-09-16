@@ -1,4 +1,5 @@
 export default {
+  app: {},
   flights: [
     {
       id: '1',

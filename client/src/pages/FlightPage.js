@@ -1,35 +1,23 @@
 import axios from "axios";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
+import WalletStatus from "./WalletStatus";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { dateOf, getContractModules, redirect, toFormat } from "./utils";
-
-const { web3, flightContractFactory } = getContractModules();
+import { dateOf, redirect, toFormat } from "./utils";
 
 class FlightPage extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      price: props.flight.price,
-      address: "",
-      contractAddress: "",
-      factoryInstance: null,
+      price: props.flight.price
     };
     this.mounted = true;
   }
 
   componentDidMount = () => {
     this.loadCovidCases();
-    window.ethereum
-      .enable()
-      .then(() => web3.eth.getAccounts())
-      .then((accounts) => {
-        this.setAccount(accounts[0]);
-        return flightContractFactory.deployed();
-      })
-      .then((factoryInstance) => this.setFactoryInstance(factoryInstance));
   };
 
   componentWillUnmount = () => {
@@ -64,24 +52,21 @@ class FlightPage extends Component {
     }
   };
 
-  setAccount = address => this.setState({ address });
-
-  setFactoryInstance = factoryInstance => this.setState({ factoryInstance });
-
   onSave = async () => {
     this.setState({ isSaving: true });
+    const app = this.props.app;
     const contract = {
       flightId: this.props.flightId,
       desiredCovidCases: this.state.desiredCovidCases,
       price: this.state.price,
     }; // Submit contract based on this.props.flightId and desired covid cases
     try {
-      const contractAddress = await this.state.factoryInstance.newFlightContract(
-        this.state.address,
+      const contractAddress = await app.factoryInstance.newFlightContract(
+        app.address,
         contract.price,
         contract.flightId,
         contract.desiredCovidCases,
-        { from: this.state.address }
+        { from: app.address }
       );
       if (this.mounted) {
         this.setState({
@@ -101,6 +86,7 @@ class FlightPage extends Component {
   };
 
   render() {
+    const app = this.props.app;
     const flight = this.props.flight;
     const isLoading = this.state.isLoading;
     const isSaving = this.state.isSaving;
@@ -108,7 +94,7 @@ class FlightPage extends Component {
     const contract = this.state.contract;
     return (
       <div className="FlightPage">
-        {this.state.address && <div>Signed in as address: {this.state.address}</div>}
+        <WalletStatus />
         <button onClick={this.redirect("/")}>Back</button>
         <br />
         <br />
@@ -147,7 +133,10 @@ class FlightPage extends Component {
             You pay: ${this.state.price}
             <br />
             <br />
-            <button onClick={this.onSave} disabled={isLoading || isSaving}>
+            <button 
+              onClick={this.onSave} 
+              disabled={isLoading || isSaving || !app.factoryInstance}
+            >
               Submit
             </button>
           </div>
@@ -159,6 +148,7 @@ class FlightPage extends Component {
 
 FlightPage.propTypes = {
   actions: PropTypes.object.isRequired,
+  app: PropTypes.object.isRequired,
   flightId: PropTypes.string.isRequired,
   flight: PropTypes.object.isRequired,
 };
@@ -166,6 +156,7 @@ FlightPage.propTypes = {
 function mapStateToProps(state, ownProps) {
   const flightId = ownProps.match.params.flightId;
   return {
+    app: state.app,
     flightId,
     flight: state.flights.find((f) => f.id === flightId),
   };

@@ -1,36 +1,16 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
+import WalletStatus from "./WalletStatus";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { dateOf, getContractModules, redirect, toFormat } from "./utils";
-
-const { web3, flightContractFactory } = getContractModules();
+import { dateOf, redirect, toFormat } from "./utils";
 
 class FlightsPage extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      address: "",
-      contractCount: 0,
-    };
+    this.state = {};
   }
-
-  componentDidMount = () => {
-    window.ethereum
-      .enable()
-      .then(() => web3.eth.getAccounts())
-      .then((accounts) => {
-        this.setAccount(accounts[0]);
-        return flightContractFactory.deployed();
-      })
-      .then((factoryInstance) => factoryInstance.getContractCount())
-      .then((count) => this.setContractCount(count.toNumber()));
-  };
-
-  setAccount = (address) => this.setState({ address });
-
-  setContractCount = (contractCount) => this.setState({ contractCount });
 
   redirect = (link) => () => {
     this.props.actions.redirect(link);
@@ -40,7 +20,7 @@ class FlightsPage extends Component {
     const flights = this.props.flights;
     return (
       <div className="FlightsPage">
-        {this.state.address && <div>Signed in as address: {this.state.address}</div>}
+        <WalletStatus />
         <ul>
           {flights.map((f) => (
             <li key={f.id} onClick={this.redirect(`/${f.id}`)} className="flightItem">
@@ -54,10 +34,6 @@ class FlightsPage extends Component {
             </li>
           ))}
         </ul>
-        <div>
-          Total number of flight contracts:{" "}
-          {this.state.contractCount}
-        </div>
       </div>
     );
   }
@@ -65,11 +41,13 @@ class FlightsPage extends Component {
 
 FlightsPage.propTypes = {
   actions: PropTypes.object.isRequired,
+  app: PropTypes.object.isRequired,
   flights: PropTypes.array.isRequired,
 };
 
 function mapStateToProps(state, ownProps) {
   return {
+    app: state.app,
     flights: state.flights,
   };
 }

@@ -14,6 +14,25 @@ export function redirect(link) {
   return dispatch => dispatch(push(link));
 }
 
+export function refreshWallet() {
+  return async dispatch => {
+    try {
+      await window.ethereum.enable();
+      const accounts = await web3.eth.getAccounts();
+      if (!(accounts && accounts.length)) return;
+      dispatch({ type: 'UPDATE_APP', address: accounts[0] });
+      const factoryInstance = await flightContractFactory.deployed().catch(err => console.log(err));
+      console.log(factoryInstance);
+      if (!factoryInstance) return;
+      dispatch({ type: 'UPDATE_APP', factoryInstance });
+      const contractCount = await factoryInstance.getContractCount();
+      if (contractCount) dispatch({ type: 'UPDATE_APP', contractCount: contractCount.toNumber() });
+    } catch (err) {
+      // No Wallet
+    }
+  };
+}
+
 export function dateOf(d) {
   return moment(d, 'MM/DD/YYYY');
 }
