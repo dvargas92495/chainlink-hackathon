@@ -1,29 +1,79 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  pointer-events: none;
-}
-
-.App-header {
+.Header {
   background-color: #282c34;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  padding: 1rem;
+  text-align: center;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.WalletStatus {
+  padding: 1rem;
+  margin: 1rem 0;
+  border: 1px solid #61dafb;
+  text-align: center;
 }
 
-.flightItem {
-  margin: auto;
-  list-style: none;
+.WalletStatus {
+  padding: 1rem;
+  margin: 1rem;
+  border: 1px solid #61dafb;
+}
+
+.FlightsPage {
+  margin: 1rem;
+}
+
+.FlightItem {
   border: 1pt black solid;
-  padding: 0.5rem;
+  padding: 1rem;
   cursor: pointer;
-  justify-content: center;
+  display: flex;
+}
+
+.FlightItem > div {
+  flex: 50%;
+}
+
+.FlightItem > div:first-child {
+  text-align: left;
+}
+
+.subText{
+  font-size: 10pt;
+  color: grey;
+}
+
+.FlightItem > div:last-child {
+  text-align: right;
+  color: green;
+}
+
+.FlightPage {
+  margin: 1rem;
+  border: 1pt black solid;
+  padding: 1rem;
+}
+
+.FlightDetails {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.CovidInput {
+  display: inline;
+  border-top-style: hidden;
+  border-right-style: hidden;
+  border-left-style: hidden;
+  border-bottom-style: groove;
+  margin-left: 0.5rem;
+}
+
+
+@media only screen and (min-device-width: 375px) and (max-device-width: 812px), only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+  .FlightItem {
+    display: block;
+  }
+
+  .FlightItem > div {
+    width: 100%;
+  }
 }

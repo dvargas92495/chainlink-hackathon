@@ -7,9 +7,9 @@ import "./App.css";
 
 const App = () => (
   <div className="App">
-    <header className="App-header">
+    <header className="Header">
       <img src={logo} className="App-logo" alt="logo" height={50} width={50} />
-      <h6>wings</h6>
+      <h1>wings</h1>
       <div>
         <i>book on your terms</i>
       </div>

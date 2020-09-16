@@ -22,7 +22,7 @@ class WalletStatus extends Component {
     return address ? (
       <div className="WalletStatus">
         <div>Your wallet address:</div>
-        <div>{address}</div>
+        <div className="subText">{address}</div>
         {contractCount && (
           <div>
             Total number of flight contracts:{" "}

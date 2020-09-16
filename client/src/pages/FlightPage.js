@@ -93,55 +93,57 @@ class FlightPage extends Component {
     const covidCases = this.state.covidCases;
     const contract = this.state.contract;
     return (
-      <div className="FlightPage">
+      <>
         <WalletStatus />
-        <button onClick={this.redirect("/")}>Back</button>
-        <br />
-        <br />
-        <div>From: {flight.startCity}, {flight.startState}</div>
-        <div>To: {flight.endCity}, {flight.endState}</div>
-        <div>Departing: {toFormat(dateOf(flight.startTime))}</div>
-        <div>Arriving: {toFormat(dateOf(flight.endTime))}</div>
-        <div>Price: ${flight.price}</div>
-        <br />
-        <br />
-        {contract ? (
-          <div>
-            Success! If the number of Covid cases in {flight.endState}
-            are below {contract.desiredCovidCases} on {toFormat(dateOf(flight.endTime).subtract(1, 'week'))}
-            you will be flying there for only ${contract.price}! The contract is
-            stored at {this.state.contractAddress}!
+        <div className="FlightPage">
+          <button onClick={this.redirect("/")}>Back</button>
+          <br />
+          <br />
+          <div className="FlightDetails">
+            <div>From: {flight.startCity}, {flight.startState}</div>
+            <div>To: {flight.endCity}, {flight.endState}</div>
+            <div>Departing: {toFormat(dateOf(flight.startTime))}</div>
+            <div>Arriving: {toFormat(dateOf(flight.endTime))}</div>
+            <div>Price: ${flight.price}</div>
           </div>
-        ) : covidCases ? (
-          <div>
-            {covidCases && <div>Number of people currently hospitalized in {flight.endState}: {covidCases}</div>}
-            <br />
-            What would the number of people hospitalized need to be 
-            in {flight.endState} on {toFormat(dateOf(flight.endTime).subtract(1, 'week'))} need to be
-            for you to feel comfortable flying to {flight.endCity}, {flight.endState}?
-            <br />
-            <input
-              type="number"
-              min="0"
-              name="desiredCovidCases"
-              value={this.state.desiredCovidCases}
-              onChange={this.onChange}
-              disabled={isLoading || isSaving}
-            />
-            <br />
-            <br />
-            You pay: ${this.state.price}
-            <br />
-            <br />
-            <button 
-              onClick={this.onSave} 
-              disabled={isLoading || isSaving || !app.factoryInstance}
-            >
-              Submit
-            </button>
-          </div>
-        ) : null}
-      </div>
+          {contract ? (
+            <div>
+              Success! If the number of Covid cases in {flight.endState}
+              are below {contract.desiredCovidCases} on {toFormat(dateOf(flight.endTime).subtract(1, 'week'))}
+              you will be flying there for only ${contract.price}! The contract is
+              stored at {this.state.contractAddress}!
+            </div>
+          ) : covidCases ? (
+            <div>
+              {covidCases && <div>Number of people currently hospitalized in {flight.endState}: {covidCases}</div>}
+              <br />
+              What would the number of people hospitalized need to be 
+              in {flight.endState} on {toFormat(dateOf(flight.endTime).subtract(1, 'week'))} need to be
+              for you to feel comfortable flying to {flight.endCity}, {flight.endState}?
+              <input
+                type="number"
+                min="0"
+                name="desiredCovidCases"
+                className="CovidInput"
+                value={this.state.desiredCovidCases}
+                onChange={this.onChange}
+                disabled={isLoading || isSaving}
+              />
+              <br />
+              <br />
+              You pay: ${this.state.price}
+              <br />
+              <br />
+              <button 
+                onClick={this.onSave} 
+                disabled={isLoading || isSaving || !app.factoryInstance}
+              >
+                Submit
+              </button>
+            </div>
+          ) : null}
+        </div>
+      </>
     );
   }
 }

@@ -19,22 +19,26 @@ class FlightsPage extends Component {
   render() {
     const flights = this.props.flights;
     return (
-      <div className="FlightsPage">
+      <>
         <WalletStatus />
-        <ul>
+        <div className="FlightsPage">
           {flights.map((f) => (
-            <li key={f.id} onClick={this.redirect(`/${f.id}`)} className="flightItem">
-              {f.startCity}, {f.startState} {'->'} {f.endCity}, {f.endState}
-              <br />
-              Departing: {toFormat(dateOf(f.startTime))}
-              &nbsp;&nbsp;&nbsp;
-              Arriving: {toFormat(dateOf(f.endTime))}
-              <br />
-              ${f.price}
-            </li>
+            <div key={f.id} onClick={this.redirect(`/${f.id}`)} className="FlightItem">
+              <div>
+                <div>{f.startCity}, {f.startState} {'->'} {f.endCity}, {f.endState}</div>
+                <div className="subText">
+                  Departing: {toFormat(dateOf(f.startTime))}
+                  &nbsp;&nbsp;&nbsp;
+                  Arriving: {toFormat(dateOf(f.endTime))}
+                </div>
+              </div>
+              <div>
+                ${f.price}
+              </div>
+            </div>
           ))}
-        </ul>
-      </div>
+        </div>
+      </>
     );
   }
 }
