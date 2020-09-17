@@ -100,11 +100,11 @@ class FlightPage extends Component {
           <br />
           <br />
           <div className="FlightDetails">
-            <div>{f.startCity}, {f.startState} {'->'} {f.endCity}, {f.endState}</div>
+            <div>{flight.startCity}, {flight.startState} {'->'} {flight.endCity}, {flight.endState}</div>
             <div>
-              Departing: {toFormat(dateOf(f.startTime))}
+              Departing: {toFormat(dateOf(flight.startTime))}
               &nbsp;&nbsp;&nbsp;
-              Arriving: {toFormat(dateOf(f.endTime))}
+              Arriving: {toFormat(dateOf(flight.endTime))}
             </div>
             <div>${flight.price}</div>
           </div>
