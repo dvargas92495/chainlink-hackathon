@@ -12,6 +12,7 @@
     "lint": "yarn solhint",
     "migrate:dev": "truffle migrate --reset --network cldev",
     "migrate:ganache": "truffle migrate --reset --network ganache",
+    "migrate:kovan": "truffle migrate --network kovan",
     "migrate:live": "truffle migrate --network live",
     "ssh": "ssh -i Wings-Chainlink-Node.pem ubuntu@ec2-3-230-135-140.compute-1.amazonaws.com",
     "ssh-port": "npm run ssh -- -L 6688:localhost:6688 -N",
