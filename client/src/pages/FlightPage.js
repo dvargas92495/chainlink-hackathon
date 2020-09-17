@@ -100,11 +100,13 @@ class FlightPage extends Component {
           <br />
           <br />
           <div className="FlightDetails">
-            <div>From: {flight.startCity}, {flight.startState}</div>
-            <div>To: {flight.endCity}, {flight.endState}</div>
-            <div>Departing: {toFormat(dateOf(flight.startTime))}</div>
-            <div>Arriving: {toFormat(dateOf(flight.endTime))}</div>
-            <div>Price: ${flight.price}</div>
+            <div>{f.startCity}, {f.startState} {'->'} {f.endCity}, {f.endState}</div>
+            <div>
+              Departing: {toFormat(dateOf(f.startTime))}
+              &nbsp;&nbsp;&nbsp;
+              Arriving: {toFormat(dateOf(f.endTime))}
+            </div>
+            <div>${flight.price}</div>
           </div>
           {contract ? (
             <div>
@@ -115,7 +117,7 @@ class FlightPage extends Component {
             </div>
           ) : covidCases ? (
             <div>
-              {covidCases && <div>Number of people currently hospitalized in {flight.endState}: {covidCases}</div>}
+              <div>Number of people currently hospitalized in {flight.endState}: {covidCases}</div>
               <br />
               What would the number of people hospitalized need to be 
               in {flight.endState} on {toFormat(dateOf(flight.endTime).subtract(1, 'week'))} need to be
