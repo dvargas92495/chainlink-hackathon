@@ -21,7 +21,7 @@ export function refreshWallet() {
       const accounts = await web3.eth.getAccounts();
       if (!(accounts && accounts.length)) return;
       dispatch({ type: 'UPDATE_APP', address: accounts[0] });
-      const factoryInstance = await flightContractFactory.deployed();
+      const factoryInstance = await flightContractFactory.deployed().catch(err => console.log(err));
       if (!factoryInstance) return;
       dispatch({ type: 'UPDATE_APP', factoryInstance });
       const contractCount = await factoryInstance.getContractCount();
