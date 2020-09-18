@@ -1,0 +1,24 @@
+{
+  "initiators": [
+    {
+      "type": "runlog",
+      "params": {
+        "address": "ORACLE_KOVAN_ADDRESS"
+      }
+    }
+  ],
+  "tasks": [
+    {
+      "type": "httpget"
+    },
+    {
+      "type": "jsonparse"
+    },
+    {
+      "type": "ethuint256"
+    },
+    {
+      "type": "ethtx"
+    }
+  ]
+}

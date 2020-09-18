@@ -11,7 +11,7 @@ module.exports = async (deployer, network, [defaultAccount]) => {
     try {
       await deployer.deploy(LinkToken, { from: defaultAccount })
       await deployer.deploy(Oracle, LinkToken.address, { from: defaultAccount })
-      await deployer.deploy(FlightContractFactory, LinkToken.address, Oracle.address)
+      await deployer.deploy(FlightContractFactory, LinkToken.address)
     } catch (err) {
       console.error(err)
     }
