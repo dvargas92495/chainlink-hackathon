@@ -3,9 +3,22 @@ pragma solidity >=0.5.0;
 import "@chainlink/contracts/src/v0.6/ChainlinkClient.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract FlightContractFactory {
+contract FlightContractFactory is ChainlinkClient {
   address[] public contracts;
   uint contractId = 0;
+  bytes32 private jobId;
+  uint256 private fee;
+
+  constructor(address _link, address _oracle) public {
+    if (_link == address(0)) {
+      setPublicChainlinkToken();
+    } else {
+      setChainlinkToken(_link);
+    }
+    setChainlinkOracle(_oracle);
+    jobId = "b6602d14e4734c49a5e1ce19d45a4632"; // Get, Parse, Multi, UInt256, Transact
+    fee = 0.1 * 10 ** 18; // 0.1 LINK
+  }
 
   function getContractCount() 
     public 
@@ -16,7 +29,6 @@ contract FlightContractFactory {
   }
 
   function newFlightContract(
-    address chainLinkToken,
     uint256 price,
     uint256 flightId,
     uint256 condition
@@ -24,7 +36,7 @@ contract FlightContractFactory {
     public
     returns(address newContract)
   {
-    FlightContract f = new FlightContract(chainLinkToken, price, flightId, condition);
+    FlightContract f = new FlightContract(chainlinkTokenAddress(), chainlinkOracleAddress(), price, flightId, condition);
     address addr = address(f);
     contracts.push(addr);
     return addr;
@@ -32,7 +44,6 @@ contract FlightContractFactory {
 }
 
 contract FlightContract is ChainlinkClient {
-  address private oracle;
   bytes32 private jobId;
   uint256 private fee;
 
@@ -41,13 +52,13 @@ contract FlightContract is ChainlinkClient {
   uint256 condition;
   bool refund;
 
-  constructor(address _link, uint256 _price, uint256 _flightId, uint256 _condition) public {
+  constructor(address _link, address _oracle, uint256 _price, uint256 _flightId, uint256 _condition) public {
     if (_link == address(0)) {
       setPublicChainlinkToken();
     } else {
       setChainlinkToken(_link);
     }
-    oracle = 0x2f90A6D021db21e1B2A077c5a37B3C7E75D15b7e;
+    setChainlinkOracle(_oracle);
     jobId = "b6602d14e4734c49a5e1ce19d45a4632"; // Get, Parse, Multi, UInt256, Transact
     fee = 0.1 * 10 ** 18; // 0.1 LINK
 
@@ -67,7 +78,7 @@ contract FlightContract is ChainlinkClient {
     Chainlink.Request memory req = buildChainlinkRequest(jobId, address(this), this.fulfill.selector);
     req.add("url", 'https://covidtracking.com/api/states');
     req.add("path", "[0].positive");
-    requestId = sendChainlinkRequestTo(oracle, req, _payment);
+    requestId = sendChainlinkRequestTo(chainlinkOracleAddress(), req, _payment);
   }
 
   function fulfill(bytes32 _requestId, uint256 positiveCases)

@@ -11,7 +11,7 @@ module.exports = async (deployer, network, [defaultAccount]) => {
     try {
       await deployer.deploy(LinkToken, { from: defaultAccount })
       await deployer.deploy(Oracle, LinkToken.address, { from: defaultAccount })
-      await deployer.deploy(FlightContractFactory, LinkToken.address, "https://api.github.com/repos/trufflesuite/truffle/issues/3183")
+      await deployer.deploy(FlightContractFactory, LinkToken.address, Oracle.address)
     } catch (err) {
       console.error(err)
     }
