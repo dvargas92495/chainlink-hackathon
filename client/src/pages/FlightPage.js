@@ -11,7 +11,7 @@ class FlightPage extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      price: props.flight.price
+      price: props.flight.price,
     };
     this.mounted = true;
   }
@@ -30,7 +30,9 @@ class FlightPage extends Component {
 
   loadCovidCases = async () => {
     this.setState({ isLoading: true });
-    const covidTracker = await axios.get(`https://api.covidtracking.com/v1/states/${this.props.flight.endState}/current.json`);
+    const covidTracker = await axios.get(
+      `https://api.covidtracking.com/v1/states/${this.props.flight.endState}/current.json`
+    );
     const covidCases = covidTracker && covidTracker.data.hospitalizedCurrently;
     if (this.mounted) {
       this.setState({ isLoading: false });
@@ -39,13 +41,14 @@ class FlightPage extends Component {
     }
   };
 
-  onChange = async event => {
+  onChange = async (event) => {
     const field = event.target.name;
     const value = Number(event.target.value);
     this.setState({ [field]: value, isLoading: true });
-    const covidCases = this.state.covidCases
+    const covidCases = this.state.covidCases;
     let price = this.props.flight.price;
-    if (value < covidCases) price = Math.round(price * (1 + (covidCases - value) / covidCases), 0);
+    if (value < covidCases)
+      price = Math.round(price * (1 + (covidCases - value) / covidCases), 0);
     if (this.mounted) {
       this.setState({ isLoading: false });
       if (price) this.setState({ price });
@@ -61,18 +64,20 @@ class FlightPage extends Component {
       price: this.state.price,
     }; // Submit contract based on this.props.flightId and desired covid cases
     try {
-      const contractAddress = await app.factoryInstance.newFlightContract(
-        app.address,
+      const flightContract = await app.factoryInstance.newFlightContract(
         contract.price,
         contract.flightId,
         contract.desiredCovidCases,
         { from: app.address }
       );
+      console.log(`Created Contract ${JSON.stringify(flightContract)}`);
+      const receipt = await fundFlightContractAt(flightContract.address);
       if (this.mounted) {
         this.setState({
           isSaving: false,
           contract,
-          contractAddress: contractAddress.tx,
+          contractAddress: flightContract.address,
+          receipt,
         });
       }
     } catch (e) {
@@ -100,28 +105,37 @@ class FlightPage extends Component {
           <br />
           <br />
           <div className="FlightDetails">
-            <div>{flight.startCity}, {flight.startState} {'->'} {flight.endCity}, {flight.endState}</div>
+            <div>
+              {flight.startCity}, {flight.startState} {"->"} {flight.endCity},{" "}
+              {flight.endState}
+            </div>
             <div>
               Departing: {toFormat(dateOf(flight.startTime))}
-              &nbsp;&nbsp;&nbsp;
-              Arriving: {toFormat(dateOf(flight.endTime))}
+              &nbsp;&nbsp;&nbsp; Arriving: {toFormat(dateOf(flight.endTime))}
             </div>
             <div>${flight.price}</div>
           </div>
           {contract ? (
             <div>
               Success! If the number of Covid cases in {flight.endState}
-              are below {contract.desiredCovidCases} on {toFormat(dateOf(flight.endTime).subtract(1, 'week'))}
-              you will be flying there for only ${contract.price}! The contract is
-              stored at {this.state.contractAddress}!
+              are below {contract.desiredCovidCases} on{" "}
+              {toFormat(dateOf(flight.endTime).subtract(1, "week"))}
+              you will be flying there for only ${contract.price}! The contract
+              is stored at {this.state.contractAddress}! Here's the receipt{" "}
+              {this.state.receipt}.
             </div>
           ) : covidCases ? (
             <div>
-              <div>Number of people currently hospitalized in {flight.endState}: {covidCases}</div>
+              <div>
+                Number of people currently hospitalized in {flight.endState}:{" "}
+                {covidCases}
+              </div>
               <br />
-              What would the number of people hospitalized need to be 
-              in {flight.endState} on {toFormat(dateOf(flight.endTime).subtract(1, 'week'))} need to be
-              for you to feel comfortable flying to {flight.endCity}, {flight.endState}?
+              What would the number of people hospitalized need to be in{" "}
+              {flight.endState} on{" "}
+              {toFormat(dateOf(flight.endTime).subtract(1, "week"))} need to be
+              for you to feel comfortable flying to {flight.endCity},{" "}
+              {flight.endState}?
               <input
                 type="number"
                 min="0"
@@ -136,8 +150,8 @@ class FlightPage extends Component {
               You pay: ${this.state.price}
               <br />
               <br />
-              <button 
-                onClick={this.onSave} 
+              <button
+                onClick={this.onSave}
                 disabled={isLoading || isSaving || !app.factoryInstance}
               >
                 Submit

@@ -1,4 +1,6 @@
 import contractFactory from "../contracts/FlightContractFactory.json";
+import contract from "../contracts/FlightContractFactory.json";
+import linkTokenInterface from "../contracts/LinkTokenInterface.json";
 import moment from "moment";
 import TruffleContract from "@truffle/contract";
 import Web3 from "web3";
@@ -9,6 +11,11 @@ const web3 = window.ethereum
   : new Web3("ws://localhost:7545");
 const flightContractFactory = TruffleContract(contractFactory);
 flightContractFactory.setProvider(web3.currentProvider);
+const flightContract = TruffleContract(contract);
+flightContract.setProvider(web3.currentProvider);
+const linkTokenContract = TruffleContract(linkTokenInterface);
+linkTokenInterface.setProvider(web3.currentProvider);
+const LINK_PAYMENT = '1000000000000000000'; // 1 LINK TOKEN
 
 export function redirect(link) {
   return dispatch => dispatch(push(link));
@@ -30,6 +37,15 @@ export function refreshWallet() {
       // No Wallet
     }
   };
+}
+
+export function fundFlightContractAt(address) {
+  const fc = await flightContract.at(address)
+  const tokenAddress = await fc.getChainlinkToken()
+  const token = await linkTokenContract.at(tokenAddress)
+  console.log('Funding contract:', fc.address)
+  const tx = await token.transfer(fc.address, LINK_PAYMENT)
+  return tx;
 }
 
 export function dateOf(d) {

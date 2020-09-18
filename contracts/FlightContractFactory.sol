@@ -82,7 +82,7 @@ contract FlightContract is ChainlinkClient {
       return 0x0;
     }
 
-    assembly { // solhint-disable-line no-inline-assembly
+    assembly {
       result := mload(add(source, 32))
     }
   }

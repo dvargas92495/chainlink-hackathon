@@ -24,11 +24,9 @@ class WalletStatus extends Component {
         <div>Your wallet address:</div>
         <div className="subText">{address}</div>
         {contractCount && (
-          <div>
-            Total number of flight contracts:{" "}
-            {contractCount}
-          </div>
+          <div>Total number of flight contracts: {contractCount}</div>
         )}
+        <button onClick={this.props.actions.refreshWallet}>Refresh</button>
       </div>
     ) : null;
   }
@@ -36,12 +34,12 @@ class WalletStatus extends Component {
 
 WalletStatus.propTypes = {
   actions: PropTypes.object.isRequired,
-  app: PropTypes.object.isRequired
+  app: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state, ownProps) {
   return {
-    app: state.app
+    app: state.app,
   };
 }
 

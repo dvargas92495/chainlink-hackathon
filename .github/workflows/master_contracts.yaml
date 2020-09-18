@@ -1,9 +1,9 @@
-name: Deploy to Production from Master
+name: Deploy Contracts
 on:
   push:
     branches: master
     paths:
-      - "client/**"
+      - "contracts/**"
 
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.DEPLOY_AWS_ACCESS_KEY_ID }}
@@ -19,22 +19,10 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12.16.1
-      - name: install root
-        run: npm install
-      - name: install
-        working-directory: client
-        run: npm install
-      - name: Build
-        working-directory: client
-        run: npm run build
-
-        # This is really annoying
-        # https://github.com/trufflesuite/truffle/issues/3009
-        env: 
-          CI: false
+      - name: Compile
+        run: npx truffle compile
       - name: Upload
-        working-directory: client
-        run: aws s3 sync build s3://wings.davidvargas.me
+        run: aws s3 sync build/contracts s3://wings.davidvargas.me/contracts
       - name: Invalidate Cache
         run: |
           CLOUDFRONT_ID=$(aws cloudfront list-distributions --query "DistributionList.Items[*].{Alias:Aliases.Items[0],Id:Id}[?Alias=='wings.davidvargas.me'].Id" --output text)
