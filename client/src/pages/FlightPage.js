@@ -5,7 +5,7 @@ import WalletStatus from "./WalletStatus";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { dateOf, redirect, toFormat } from "./utils";
+import { dateOf, redirect, toFormat, fundFlightContractAt } from "./utils";
 
 class FlightPage extends Component {
   constructor(props, context) {

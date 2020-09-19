@@ -75,7 +75,7 @@ contract FlightContract is ChainlinkClient {
     emit FlightContractRefunded(_requestId, refund);
   }
 
-  // this was straight copy paste
+  // this was straight copy-paste
   function stringToBytes32(string memory source) private pure returns (bytes32 result) {
     bytes memory tempEmptyStringTest = bytes(source);
     if (tempEmptyStringTest.length == 0) {

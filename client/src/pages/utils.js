@@ -14,7 +14,7 @@ flightContractFactory.setProvider(web3.currentProvider);
 const flightContract = TruffleContract(contract);
 flightContract.setProvider(web3.currentProvider);
 const linkTokenContract = TruffleContract(linkTokenInterface);
-linkTokenInterface.setProvider(web3.currentProvider);
+linkTokenContract.setProvider(web3.currentProvider);
 const LINK_PAYMENT = '1000000000000000000'; // 1 LINK TOKEN
 
 export function redirect(link) {
@@ -39,7 +39,7 @@ export function refreshWallet() {
   };
 }
 
-export function fundFlightContractAt(address) {
+export async function fundFlightContractAt(address) {
   const fc = await flightContract.at(address)
   const tokenAddress = await fc.getChainlinkToken()
   const token = await linkTokenContract.at(tokenAddress)
