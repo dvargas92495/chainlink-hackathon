@@ -70,13 +70,15 @@ class FlightPage extends Component {
         contract.desiredCovidCases,
         { from: app.address }
       );
-      console.log(`Created Contract ${JSON.stringify(flightContract)}`);
-      const receipt = await fundFlightContractAt(flightContract.address);
+      window.flightContract = app.factoryInstance;
+      const contractAddress = flightContract.receipt.to;
+      console.log(`Created Contract ${contractAddress}`);
+      const receipt = await fundFlightContractAt(contractAddress);
       if (this.mounted) {
         this.setState({
           isSaving: false,
           contract,
-          contractAddress: flightContract.address,
+          contractAddress,
           receipt,
         });
       }
@@ -156,6 +158,7 @@ class FlightPage extends Component {
               >
                 Submit
               </button>
+              {isSaving && <div>New Flight Contract being created...</div>}
             </div>
           ) : null}
         </div>

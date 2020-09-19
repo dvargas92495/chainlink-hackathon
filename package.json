@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "A Chainlink Hackathon Project 2020",
   "scripts": {
-    "compile": "truffle compile",
-    "postcompile": "mkdir client/src/contracts && cp build/contracts/* client/src/contracts",
+    "compile": "npx truffle compile",
+    "postcompile": "mkdirp client/src/contracts && cp build/contracts/* client/src/contracts/",
     "console:dev": "truffle console --network cldev",
     "console:ganache": "truffle console --network ganache",
     "console:live": "truffle console --network live",
@@ -35,6 +35,7 @@
     "chai": "^4.2.0",
     "depcheck": "^0.9.1",
     "eslint": "^6.6.0",
+    "mkdirp": "^1.0.4",
     "solhint": "^2.1.0",
     "truffle": "^5.1.5"
   }

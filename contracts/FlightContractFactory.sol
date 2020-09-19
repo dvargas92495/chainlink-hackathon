@@ -23,6 +23,14 @@ contract FlightContractFactory is ChainlinkClient {
     return contracts.length;
   }
 
+  function getContractAt(uint _contractId) 
+    public 
+    view 
+    returns(address contractAddress) 
+  {
+    return contracts[_contractId];
+  }
+
   function newFlightContract(
     uint256 price,
     uint256 flightId,
@@ -73,6 +81,10 @@ contract FlightContract is ChainlinkClient {
   {
     bool refund = positiveCases > condition;
     emit FlightContractRefunded(_requestId, refund);
+  }
+
+  function getChainlinkToken() public view returns (address token) {
+    return chainlinkTokenAddress();
   }
 
   // this was straight copy-paste
