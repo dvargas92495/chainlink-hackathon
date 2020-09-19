@@ -2,3 +2,4 @@
 /build
 Wings-Chainlink-Node.pem
 .env
+/client/src/contracts

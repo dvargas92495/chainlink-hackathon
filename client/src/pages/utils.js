@@ -9,6 +9,7 @@ import { push } from "connected-react-router";
 const web3 = window.ethereum
   ? new Web3(window.ethereum)
   : new Web3("ws://localhost:7545");
+
 const flightContractFactory = TruffleContract(contractFactory);
 flightContractFactory.setProvider(web3.currentProvider);
 const flightContract = TruffleContract(contract);

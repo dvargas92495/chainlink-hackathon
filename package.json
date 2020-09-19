@@ -4,6 +4,7 @@
   "description": "A Chainlink Hackathon Project 2020",
   "scripts": {
     "compile": "truffle compile",
+    "postcompile": "mkdir client/src/contracts && cp build/contracts/* client/src/contracts",
     "console:dev": "truffle console --network cldev",
     "console:ganache": "truffle console --network ganache",
     "console:live": "truffle console --network live",
