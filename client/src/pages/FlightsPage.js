@@ -9,7 +9,6 @@ import { dateOf, redirect, toFormat } from "./utils";
 class FlightsPage extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
   }
 
   redirect = (link) => () => {

@@ -5,7 +5,13 @@ import WalletStatus from "./WalletStatus";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { dateOf, redirect, toFormat, fundFlightContractAt } from "./utils";
+import {
+  dateOf,
+  redirect,
+  toFormat,
+  fundFlightContractAt,
+  refreshWallet,
+} from "./utils";
 
 class FlightPage extends Component {
   constructor(props, context) {
@@ -64,16 +70,21 @@ class FlightPage extends Component {
       price: this.state.price,
     }; // Submit contract based on this.props.flightId and desired covid cases
     try {
+      const sender = { from: app.address };
       const flightContract = await app.factoryInstance.newFlightContract(
         contract.price,
         contract.flightId,
         contract.desiredCovidCases,
-        { from: app.address }
+        sender
       );
-      window.flightContract = app.factoryInstance;
-      const contractAddress = flightContract.receipt.to;
-      console.log(`Created Contract ${contractAddress}`);
-      const receipt = await fundFlightContractAt(contractAddress);
+      window.flightContract = flightContract;
+      const newCount = await app.factoryInstance.getContractCount(sender);
+      const contractAddress = await app.factoryInstance.getContractAt(
+        newCount.toNumber() - 1,
+        sender
+      );
+      const receipt = await fundFlightContractAt(contractAddress, app.address);
+      this.props.actions.refreshWallet();
       if (this.mounted) {
         this.setState({
           isSaving: false,
@@ -185,7 +196,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ redirect }, dispatch),
+    actions: bindActionCreators({ redirect, refreshWallet }, dispatch),
   };
 }
 

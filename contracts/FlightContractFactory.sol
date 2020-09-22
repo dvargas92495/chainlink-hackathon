@@ -3,16 +3,12 @@ pragma solidity >=0.5.0;
 import "@chainlink/contracts/src/v0.6/ChainlinkClient.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract FlightContractFactory is ChainlinkClient {
-  address[] public contracts;
-  uint contractId = 0;
+contract FlightContractFactory {
+  mapping(address => address[]) public contracts;
+  address link;
 
   constructor(address _link) public {
-    if (_link == address(0)) {
-      setPublicChainlinkToken();
-    } else {
-      setChainlinkToken(_link);
-    }
+    link = _link;
   }
 
   function getContractCount() 
@@ -20,15 +16,24 @@ contract FlightContractFactory is ChainlinkClient {
     view 
     returns(uint contractCount) 
   {
-    return contracts.length;
+    address user = msg.sender;
+    return contracts[user].length;
   }
 
   function getContractAt(uint _contractId) 
     public 
     view 
-    returns(address contractAddress) 
+    returns(address) 
   {
-    return contracts[_contractId];
+    address user = msg.sender;
+    return contracts[user][_contractId];
+  }
+
+  function clearContracts()
+  public
+  {
+    address user = msg.sender;
+    delete contracts[user]; 
   }
 
   function newFlightContract(
@@ -37,19 +42,21 @@ contract FlightContractFactory is ChainlinkClient {
     uint256 condition
   )
     public
-    returns(address newContract)
+    returns(address)
   {
-    FlightContract f = new FlightContract(chainlinkTokenAddress(), price, flightId, condition);
+    address from = msg.sender;
+    FlightContract f = new FlightContract(link, price, flightId, condition);
     address addr = address(f);
-    contracts.push(addr);
+    contracts[from].push(addr);
     return addr;
   }
 }
 
 contract FlightContract is ChainlinkClient {
-  uint256 price;
-  uint256 flightId;
-  uint256 condition;
+  uint256 public price;
+  uint256 public flightId;
+  uint256 public condition;
+  bool public refund;
   event FlightContractRefunded(
     bytes32 indexed requestId,
     bool indexed refund
@@ -79,11 +86,11 @@ contract FlightContract is ChainlinkClient {
     public
     recordChainlinkFulfillment(_requestId)
   {
-    bool refund = positiveCases > condition;
+    refund = positiveCases > condition;
     emit FlightContractRefunded(_requestId, refund);
   }
 
-  function getChainlinkToken() public view returns (address token) {
+  function getChainlinkToken() public view returns (address) {
     return chainlinkTokenAddress();
   }
 
