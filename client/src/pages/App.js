@@ -1,4 +1,4 @@
-import logo from "./logo.svg";
+import logo from "./logo.png";
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 import FlightPage from "./FlightPage";

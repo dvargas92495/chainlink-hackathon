@@ -7,10 +7,6 @@ import { withRouter } from "react-router-dom";
 import { dateOf, redirect, toFormat } from "./utils";
 
 class FlightsPage extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   redirect = (link) => () => {
     this.props.actions.redirect(link);
   };
