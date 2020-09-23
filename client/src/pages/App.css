@@ -1,8 +1,5 @@
-.Header {
-  background-color: #282c34;
-  padding: 1rem;
-  text-align: center;
-  color: white;
+#Banner {
+  width: 100vw;
 }
 
 .WalletStatus {
