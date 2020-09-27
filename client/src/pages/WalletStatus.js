@@ -30,9 +30,10 @@ const CurrentFlightContract = ({
         const req = await instance.createCheckFlightConditionRequest(
           "0xe7306B3965C9cF2995a0b06170A2007B0d778f0A",
           "123aae603d0e4197b284608879b3078f",
-          sender
+          {
+            ...sender,
+          }
         );
-        console.log("req");
         await refresh();
         window.req = req;
       }}
