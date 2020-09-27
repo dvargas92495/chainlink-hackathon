@@ -2,7 +2,6 @@ import './index.css';
 import App from './pages/App';
 import React from 'react';
 import { render } from 'react-dom';
-import { unregister } from './serviceWorker';
 import { ConnectedRouter } from 'connected-react-router';
 import { Provider } from 'react-redux';
 
@@ -16,7 +15,3 @@ render(
   </Provider>,
   document.getElementById('root')
 );
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-unregister();
